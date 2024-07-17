@@ -1,6 +1,7 @@
-let firstNum = "";
-let secondNum = "";
-let mathOperator = "";
+let firstNum = '';
+let secondNum = '';
+let mathOperator = '';
+let result = '';
 
 /* Math Operators */
 function add(a, b) {
@@ -36,20 +37,37 @@ function operate(num1, operator, num2) {
 }
 
 function displayCalculations() {
-    const btn = document.querySelectorAll('button');
-    const clearBtn = document.querySelector('#AC')
+    const numberBtn = document.querySelectorAll('div.numbers > input');
+    const operationBtn = document.querySelectorAll('div.operations > input');
     const display = document.querySelector('.display');
     const calculator = document.querySelector('#calculator');
 
-    btn.forEach((button) => {
-        button.addEventListener('click', () => {
-            firstNum += button.id;
-            display.textContent = firstNum;
+    numberBtn.forEach((num) => {
+        num.addEventListener('click', () => {
+            if (mathOperator == '') {
+                firstNum += num.value;
+                // console.log('First: ', firstNum);
+                display.innerHTML = firstNum;
+            }
+            else {
+                secondNum += num.value;
+                // console.log('Second: ', secondNum);
+                display.innerHTML = secondNum;
+            }
         });
     });
 
-    clearBtn.addEventListener('click', () => {
-        display.textContent = '';
+    operationBtn.forEach((operation) => {
+        operation.addEventListener('click', () => {
+            if (operation.value !== '=') {
+                mathOperator = operation.value;
+                display.innerHTML = mathOperator;
+            }
+            else {
+                result = operate(Number(firstNum), mathOperator, Number(secondNum));
+                display.innerHTML = result;
+            }
+        })
     });
 
     calculator.appendChild(display);
