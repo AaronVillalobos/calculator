@@ -1,3 +1,6 @@
+const display = document.querySelector('.display');
+const calculator = document.querySelector('#calculator');
+
 let firstNum = '';
 let secondNum = '';
 let mathOperator = '';
@@ -39,19 +42,18 @@ function operate(num1, operator, num2) {
 function displayCalculations() {
     const numberBtn = document.querySelectorAll('div.numbers > input');
     const operationBtn = document.querySelectorAll('div.operations > input');
-    const display = document.querySelector('.display');
-    const calculator = document.querySelector('#calculator');
+    const clearBtn = document.querySelector('#clear');
 
     numberBtn.forEach((num) => {
         num.addEventListener('click', () => {
             if (mathOperator == '') {
                 firstNum += num.value;
-                // console.log('First: ', firstNum);
+                console.log('First: ', firstNum);
                 display.innerHTML = firstNum;
             }
             else {
                 secondNum += num.value;
-                // console.log('Second: ', secondNum);
+                console.log('Second: ', secondNum);
                 display.innerHTML = secondNum;
             }
         });
@@ -61,14 +63,21 @@ function displayCalculations() {
         operation.addEventListener('click', () => {
             if (operation.value !== '=') {
                 mathOperator = operation.value;
-                display.innerHTML = mathOperator;
             }
             else {
                 result = operate(Number(firstNum), mathOperator, Number(secondNum));
+                console.log(result);
                 display.innerHTML = result;
             }
         })
     });
+
+    clearBtn.addEventListener('click', () => {
+        firstNum = '';
+        secondNum = '';
+        mathOperator = '';
+        display.innerHTML = '0';
+    })
 
     calculator.appendChild(display);
 }
