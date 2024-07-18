@@ -20,6 +20,9 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b == 0) {
+        return ("Error");
+    }
     return a / b;
 }
 
@@ -35,7 +38,7 @@ function operate(num1, operator, num2) {
         case '/':
             return divide(num1, num2);
         default:
-            console.log("Invalid Operation");
+            return ("Invalid Operation");
     }
 }
 
@@ -44,40 +47,75 @@ function displayCalculations() {
     const operationBtn = document.querySelectorAll('div.operations > input');
     const clearBtn = document.querySelector('#clear');
 
+    function getNumber(value) {
+        if (mathOperator == '') {
+            firstNum += value;
+            result = firstNum;
+            display.innerHTML = result;
+        }
+        else {
+            secondNum += value;
+            result = secondNum;
+            display.innerHTML = result;
+        }
+    }
+
+    function getOperation(op) {
+        if (firstNum !== '' && secondNum !== '') {
+            calculate();
+            mathOperator = op;
+        }
+        else {
+            mathOperator = op;
+        }
+    }
+
+    function calculate() {
+        if (firstNum !== '' && mathOperator !== '' && secondNum !== '') {
+            result = operate(Number(firstNum), mathOperator, Number(secondNum));
+            firstNum = result;
+            mathOperator = '';
+            secondNum = '';
+        }
+        else if (firstNum !== '' && mathOperator !== '') {
+            result = operate(Number(firstNum), mathOperator, Number(firstNum));
+            firstNum = result;
+            mathOperator = '';
+            secondNum = '';
+        }
+    }
+
+    function output() {
+        display.innerHTML = result;
+    }
+
     numberBtn.forEach((num) => {
         num.addEventListener('click', () => {
-            if (mathOperator == '') {
-                firstNum += num.value;
-                console.log('First: ', firstNum);
-                display.innerHTML = firstNum;
-            }
-            else {
-                secondNum += num.value;
-                console.log('Second: ', secondNum);
-                display.innerHTML = secondNum;
-            }
+            const value = num.value;
+            getNumber(value);
         });
     });
 
     operationBtn.forEach((operation) => {
         operation.addEventListener('click', () => {
-            if (operation.value !== '=') {
-                mathOperator = operation.value;
+            if (operation.value === '=') {
+                calculate();
             }
             else {
-                result = operate(Number(firstNum), mathOperator, Number(secondNum));
-                console.log(result);
-                display.innerHTML = result;
+                mathOperator = operation.value;
+                getOperation(mathOperator);
             }
-        })
+            output();
+        });
     });
 
     clearBtn.addEventListener('click', () => {
         firstNum = '';
         secondNum = '';
         mathOperator = '';
+        result = '';
         display.innerHTML = '0';
-    })
+    });
 
     calculator.appendChild(display);
 }
