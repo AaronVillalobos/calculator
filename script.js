@@ -121,8 +121,6 @@ function displayCalculations() {
         result = '';
         display.innerHTML = '0';
     });
-
-    calculator.appendChild(display);
 }
 
 displayCalculations();
