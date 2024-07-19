@@ -91,7 +91,12 @@ function displayCalculations() {
 
     numberBtn.forEach((num) => {
         num.addEventListener('click', () => {
-            const value = num.value;
+            let value = num.value;
+            
+            if (value == '.') {
+                value = '.';
+            }
+
             getNumber(value);
         });
     });
